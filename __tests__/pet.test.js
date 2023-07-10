@@ -1,5 +1,5 @@
 const Pet = require('../src/pet');
-
+const assert = require('assert');
 describe('constructor', () => {
   it('returns an object', () => {
       expect(new Pet('Fido')).toBeInstanceOf(Object);
@@ -120,4 +120,39 @@ describe('feed', () => {
   
         expect(() => pet.checkUp()).toThrow('Your pet is no longer alive :(');
       });
-    });   
+
+
+describe('Child Pet', function () {
+  it('should be fed when parent feeds', function () {
+    const parent = new Pet('Dave');
+    const child = new Pet('Amelia');
+    parent.adoptChild(child);
+
+    parent.feed();
+
+    assert.strictEqual(child.hunger, 0);
+  });
+
+  it('should have fitness improved when parent walks', function () {
+    const parent = new Pet('Dave');
+    const child = new Pet('Amelia');
+    parent.adoptChild(child);
+
+    parent.walk();
+
+    assert.strictEqual(child.fitness, 10);
+  });
+
+  it('should return correct checkUp message', function () {
+    const parent = new Pet('Dave');
+    const child = new Pet('Amelia');
+    parent.adoptChild(child);
+
+    child.fitness = 2;
+    child.hunger = 6;
+
+    const message = parent.children[0].checkUp();
+    assert.strictEqual(message, 'I need a walk AND I am hungry');
+  });
+  });
+ });   
